@@ -1,0 +1,7 @@
+#!/bin/bash
+
+aws ec2 describe-vpc-endpoints --output=json | \
+jq -r '
+    .VpcEndpoints[] | [ .VpcId, .ServiceName, .VpcEndpointId, .VpcEndpointType, (.Tags[] | select(.Key == "Name")).Value]
+    | @csv
+' |column -t -s, | sort -k3

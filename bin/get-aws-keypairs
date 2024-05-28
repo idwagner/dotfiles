@@ -1,0 +1,6 @@
+#!/bin/bash
+
+aws ec2 describe-key-pairs --output=json | \
+jq -r '
+    .KeyPairs[] | .KeyName
+' | sort

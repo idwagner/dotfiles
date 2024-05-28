@@ -1,0 +1,55 @@
+[user]
+	name = Isaac Wagner
+	useConfigOnly = true
+
+[alias]
+	st = status
+	lk = log --graph --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+
+	# Amend the currently staged files to the latest commit
+	amend = commit --amend --reuse-message=HEAD
+
+	email-gh = "config --local user.email idwagner@users.noreply.github.com"
+	email-gmail = "config --local user.email idwagner000@gmail.com"
+
+[core]
+	editor = vi
+	excludesfile = ~/.gitignore
+
+[commit]
+	verbose = true
+
+[status]
+	short = true
+
+[push]
+	default = simple
+
+[init]
+	defaultBranch = main
+
+[diff]
+    whitespace = red reverse
+    wsErrorHighlight = new,old
+
+[credential]
+	helper = cache
+
+[pull]
+	ff = only
+	rebase = false
+
+[include]
+    path = ~/dotfiles/custom/gitconfig
+
+[color "diff"]
+
+	meta = yellow bold
+	frag = magenta bold # line info
+	old = red # deletions
+	new = green # additions
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+aws kms list-aliases --output=json | \
+jq -r '
+    .Aliases[] | [.AliasArn, ((.AliasArn | split(":alias")[0]) + ":key/" + .TargetKeyId)]
+    | @csv
+' | column -t -s, | sort

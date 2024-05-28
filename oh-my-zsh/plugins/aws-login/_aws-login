@@ -1,0 +1,15 @@
+#compdef aws-login
+
+__aws_login () {
+    date >> /tmp/_aws_login.log
+    local line
+
+    local profiles=`grep '\[' ~/.saml2aws | sed 's/[][]//g'`
+    _arguments -C \
+    "-h[Show help information]" \
+    "--h[Show help information]" \
+    "1: :($profiles)" \
+    "*::arg:->args"
+}
+
+__aws_login "$@"

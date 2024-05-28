@@ -1,0 +1,7 @@
+#!/bin/bash
+
+aws ec2 describe-instances --output=json | \
+jq -r '
+  .Reservations[].Instances[] | [.LaunchTime, .InstanceType, .InstanceId, .State.Name, .ImageId, .PrivateIpAddress, (.Tags | from_entries | .Name) ]
+    | @tsv
+' |column -t -s, | sort -k1

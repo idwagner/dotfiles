@@ -1,0 +1,16 @@
+#compdef ws
+
+__ws () {
+    date >> /tmp/_ws.log
+    local line
+
+    test -d "$HOME/code/vscode-workspaces" || return
+    local profiles=$(find $HOME/code/vscode-workspaces -maxdepth 1 -name '*.code-workspace' | xargs -n1 basename | sed 's/.code-workspace//g')
+    _arguments -C \
+    "-h[Show help information]" \
+    "--h[Show help information]" \
+    "1: :($profiles)" \
+    "*::arg:->args"
+}
+
+__ws "$@"

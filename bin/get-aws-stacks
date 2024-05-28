@@ -1,0 +1,7 @@
+#!/bin/bash
+
+aws cloudformation list-stacks --output=json | \
+jq -r '
+  .StackSummaries[] | [.StackStatus, .StackName]
+    | @tsv
+' |column -t -s, | sort -k1

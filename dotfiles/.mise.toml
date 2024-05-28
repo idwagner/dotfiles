@@ -1,0 +1,14 @@
+[tools]
+python = "3.12"
+node = "18"
+usage = "latest"
+
+[settings]
+trusted_config_paths = [
+    '~/dotfiles/dotfiles/.mise.toml',
+]
+
+env_file = '.idw_env' #
+plugin_autoupdate_last_check_duration = '1 week'
+
+python_compile = true

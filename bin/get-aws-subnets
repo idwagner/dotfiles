@@ -1,0 +1,7 @@
+#!/bin/bash
+
+aws ec2 describe-subnets --output=json | \
+jq -r '
+    .Subnets[] | [ .VpcId, .SubnetId, .AvailabilityZone, .CidrBlock, (.Tags[] | select(.Key == "Name")).Value]
+    | @csv
+' |column -t -s, | sort -k3

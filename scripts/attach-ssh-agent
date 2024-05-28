@@ -1,0 +1,42 @@
+#!/bin/bash
+get_sshagent_pids () {
+    ps -C ssh-agent -o pid --no-headers | sed 's/ //g'
+}
+
+setup_agent () {
+
+
+  _ssh_agent_sock=~/.ssh_agent.sock
+
+  agent_pids=$(get_sshagent_pids)
+  echo "Agent PIDS: ${agent_pids}" 1>&2
+
+  if [ -z "$agent_pids" ]; then
+    # No agents running
+
+    rm -f $_ssh_agent_sock
+    eval `ssh-agent -a $_ssh_agent_sock`
+    ssh-add ~/.ssh/id_rsa
+  else
+    for pid in $(get_sshagent_pids); do
+
+        SSH_AUTH_SOCK=$_ssh_agent_sock; export SSH_AUTH_SOCK;
+        SSH_AGENT_PID=$pid; export SSH_AGENT_PID;
+        break
+    done
+  fi
+}
+
+
+SSH_ADD_OPTS=""
+
+# MacOS has builtin agent
+if [ $(uname -s) = "Darwin" ]; then
+  SSH_ADD_OPTS=--apple-load-keychain
+else
+  setup_agent
+fi
+
+test -f "$HOME/.ssh/id_rsa" && {
+  ssh-add -l > /dev/null 2>&1 || ssh-add $SSH_ADD_OPTS "$HOME/.ssh/id_rsa"
+}
